@@ -2,7 +2,6 @@
 
 ## Alunos
 
-> **ANTES DE ENTREGAR: substitua os nomes abaixo pelos nomes completos de todos os integrantes do grupo.**
 
 - HELLEN CRISTHINE SOUZA ATANASIO RA1821616 - ENGENHARIA DA COMPUTAÇÃO
 
