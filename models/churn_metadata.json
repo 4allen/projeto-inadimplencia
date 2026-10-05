@@ -1,0 +1,43 @@
+{
+  "modelo": "Regressão Logística",
+  "metrica_cv": "ROC AUC",
+  "validacao_cruzada": {
+    "Regressão Logística": {
+      "media": 0.7968023421871561,
+      "desvio": 0.016112899656868192
+    },
+    "Árvore de Decisão": {
+      "media": 0.7430295965331057,
+      "desvio": 0.015879856638360893
+    },
+    "Random Forest": {
+      "media": 0.7768992918390201,
+      "desvio": 0.013861936887309018
+    },
+    "Gradient Boosting": {
+      "media": 0.7704708323529581,
+      "desvio": 0.014601572545574018
+    }
+  },
+  "teste": {
+    "acuracia": 0.759,
+    "precisao": 0.627906976744186,
+    "recall": 0.4560810810810811,
+    "f1": 0.5283757338551859,
+    "roc_auc": 0.7890289081695332,
+    "matriz_confusao": [
+      [
+        624,
+        80
+      ],
+      [
+        161,
+        135
+      ]
+    ]
+  },
+  "limiar": 0.5,
+  "analise_limiar_treino": null,
+  "sklearn": "1.8.0",
+  "random_state": 42
+}

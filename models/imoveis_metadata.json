@@ -1,0 +1,31 @@
+{
+  "modelo": "Gradient Boosting",
+  "metrica_cv": "RMSE",
+  "validacao_cruzada": {
+    "Regressão Linear": {
+      "media": 205813.73227688103,
+      "desvio": 25739.90445012338
+    },
+    "Árvore de Decisão": {
+      "media": 172662.0932357973,
+      "desvio": 7588.3043321987225
+    },
+    "Random Forest": {
+      "media": 137931.94332031143,
+      "desvio": 12201.86586862761
+    },
+    "Gradient Boosting": {
+      "media": 134315.33030706033,
+      "desvio": 16551.434935882375
+    }
+  },
+  "teste": {
+    "mae": 70434.64043715555,
+    "rmse": 115931.37575168141,
+    "r2": 0.9424858087319354
+  },
+  "limiar": null,
+  "analise_limiar_treino": null,
+  "sklearn": "1.8.0",
+  "random_state": 42
+}

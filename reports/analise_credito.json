@@ -1,0 +1,182 @@
+{
+  "linhas": 6000,
+  "proporcao_inadimplentes": 0.21033333333333334,
+  "ausentes": {
+    "renda_mensal": 231,
+    "tempo_emprego_anos": 183
+  },
+  "inadimplencia_por_score": {
+    "300–499": 0.48599670510708404,
+    "500–599": 0.30834976988823143,
+    "600–699": 0.16793893129770993,
+    "700–799": 0.10329341317365269,
+    "800–1000": 0.01839080459770115
+  },
+  "inadimplencia_por_finalidade": {
+    "educacao": 0.18933823529411764,
+    "negocio": 0.27682403433476394,
+    "pessoal": 0.2017584451642758,
+    "reforma": 0.2044392523364486,
+    "veiculo": 0.192435301924353
+  },
+  "inadimplencia_por_imovel": {
+    "nao": 0.2250351617440225,
+    "sim": 0.18895705521472392
+  },
+  "coluna_descartada": "id_contrato",
+  "justificativa_descarte": "Identificador único, sem significado causal/preditivo; favorece memorização e não generaliza.",
+  "modelo_final": {
+    "modelo": "Regressão Logística",
+    "metrica_cv": "ROC AUC",
+    "validacao_cruzada": {
+      "Regressão Logística": {
+        "media": 0.7780715274693696,
+        "desvio": 0.02243534391412703
+      },
+      "Árvore de Decisão": {
+        "media": 0.7126231092766269,
+        "desvio": 0.02158027517978371
+      },
+      "Random Forest": {
+        "media": 0.7611092243789023,
+        "desvio": 0.023285680234776448
+      },
+      "Gradient Boosting": {
+        "media": 0.75472060398652,
+        "desvio": 0.021700747219035248
+      }
+    },
+    "teste": {
+      "acuracia": 0.6733333333333333,
+      "precisao": 0.35655737704918034,
+      "recall": 0.6904761904761905,
+      "f1": 0.4702702702702703,
+      "roc_auc": 0.7624907909718036,
+      "matriz_confusao": [
+        [
+          634,
+          314
+        ],
+        [
+          78,
+          174
+        ]
+      ],
+      "custo_total": 1095000,
+      "fp": 314,
+      "fn": 78,
+      "limiar": 0.2
+    },
+    "limiar": 0.2,
+    "analise_limiar_treino": [
+      {
+        "limiar": 0.15,
+        "precisao": 0.3333333333333333,
+        "recall": 0.8217821782178217,
+        "fp": 1660,
+        "fn": 180,
+        "tp": 830,
+        "tn": 2130,
+        "custo_total": 3930000
+      },
+      {
+        "limiar": 0.2,
+        "precisao": 0.3875968992248062,
+        "recall": 0.7425742574257426,
+        "fp": 1185,
+        "fn": 260,
+        "tp": 750,
+        "tn": 2605,
+        "custo_total": 3857500
+      },
+      {
+        "limiar": 0.25,
+        "precisao": 0.42819148936170215,
+        "recall": 0.6376237623762376,
+        "fp": 860,
+        "fn": 366,
+        "tp": 644,
+        "tn": 2930,
+        "custo_total": 4218000
+      },
+      {
+        "limiar": 0.3,
+        "precisao": 0.4723404255319149,
+        "recall": 0.5495049504950495,
+        "fp": 620,
+        "fn": 455,
+        "tp": 555,
+        "tn": 3170,
+        "custo_total": 4570000
+      },
+      {
+        "limiar": 0.35,
+        "precisao": 0.5048966267682263,
+        "recall": 0.4594059405940594,
+        "fp": 455,
+        "fn": 546,
+        "tp": 464,
+        "tn": 3335,
+        "custo_total": 5050500
+      },
+      {
+        "limiar": 0.4,
+        "precisao": 0.5341701534170153,
+        "recall": 0.3792079207920792,
+        "fp": 334,
+        "fn": 627,
+        "tp": 383,
+        "tn": 3456,
+        "custo_total": 5517000
+      },
+      {
+        "limiar": 0.5,
+        "precisao": 0.6090225563909775,
+        "recall": 0.24059405940594059,
+        "fp": 156,
+        "fn": 767,
+        "tp": 243,
+        "tn": 3634,
+        "custo_total": 6370000
+      },
+      {
+        "limiar": 0.6,
+        "precisao": 0.6896551724137931,
+        "recall": 0.13861386138613863,
+        "fp": 63,
+        "fn": 870,
+        "tp": 140,
+        "tn": 3727,
+        "custo_total": 7054500
+      }
+    ],
+    "sklearn": "1.8.0",
+    "random_state": 42
+  },
+  "bonus": {
+    "roc_auc_base_media": 0.7780715274693696,
+    "roc_auc_base_desvio": 0.02243534391412703,
+    "roc_auc_com_comprometimento_media": 0.777920008359675,
+    "roc_auc_com_comprometimento_desvio": 0.02285101966849426,
+    "delta": -0.0001515191096945756,
+    "gridsearch": {
+      "melhor_roc_auc_cv": 0.7635766347083257,
+      "melhores_parametros": {
+        "modelo__max_depth": 6,
+        "modelo__min_samples_leaf": 3,
+        "modelo__n_estimators": 200
+      }
+    },
+    "class_weight": {
+      "normal": {
+        "precisao": 0.6090225563909775,
+        "recall": 0.24059405940594059
+      },
+      "balanced": {
+        "precisao": 0.3908546543277082,
+        "recall": 0.7108910891089109
+      }
+    }
+  },
+  "etica": "Modelos de crédito podem reproduzir discriminações históricas presentes nos dados. Mesmo que aumentassem a métrica, não usaríamos atributos sensíveis como raça/cor, religião, orientação sexual, opinião política, saúde, origem étnica ou outros dados pessoais sensíveis, nem proxies evidentes desses atributos. A LGPD exige finalidade, necessidade, transparência, segurança e tratamento adequado de dados pessoais; decisões automatizadas que afetem o titular devem ser governadas com explicabilidade, possibilidade de revisão e controles contra vieses e uso excessivo de dados."
+}
