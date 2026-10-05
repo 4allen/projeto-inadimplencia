@@ -1,0 +1,37 @@
+<!doctype html>
+<html lang="pt-BR">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Laboratório de Aprendizado Supervisionado</title>
+  <style>
+    :root { --fundo:#f4f5f8; --painel:#fff; --texto:#1c2330; --suave:#667085; --borda:#e2e4ea; --azul:#4b68d3; --alto:#b42318; --baixo:#027a48; }
+    *{box-sizing:border-box} body{margin:0;font-family:Inter,system-ui,Arial,sans-serif;background:var(--fundo);color:var(--texto)}
+    header{background:#1d2330;color:white;padding:22px 6vw} header h1{margin:0 0 4px;font-size:1.35rem} header p{margin:0;color:#d5d9e3;font-size:.92rem}
+    main{max-width:1180px;margin:28px auto;padding:0 18px}.abas{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:18px}.aba{border:1px solid var(--borda);background:white;padding:9px 14px;border-radius:9px;cursor:pointer}.aba.ativa{background:var(--azul);color:white;border-color:var(--azul)}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:18px}.card{background:var(--painel);border:1px solid var(--borda);border-radius:14px;padding:20px;box-shadow:0 4px 14px rgba(16,24,40,.04)}
+    h2{font-size:1.1rem;margin:0 0 16px}.campos{display:grid;grid-template-columns:1fr 1fr;gap:12px}label{font-size:.82rem;font-weight:650;display:block;margin-bottom:5px}input,select{width:100%;padding:10px;border:1px solid #cfd4dc;border-radius:8px;background:white}small{color:var(--suave)}button{margin-top:16px;width:100%;padding:11px;border:0;border-radius:8px;background:var(--azul);color:white;font-weight:700;cursor:pointer}
+    .resultado{font-size:2.1rem;font-weight:800;margin:8px 0}.alto{color:var(--alto)}.baixo{color:var(--baixo)}.barra{height:9px;background:#eceef3;border-radius:999px;overflow:hidden;margin:12px 0}.barra span{display:block;height:100%;background:var(--azul)}table{width:100%;border-collapse:collapse;font-size:.83rem;margin-top:10px}td,th{padding:7px;border-bottom:1px solid var(--borda);text-align:left}.erro{color:var(--alto);font-size:.88rem;margin-top:10px}.nota{background:#f8f9fb;border:1px solid var(--borda);padding:10px;border-radius:8px;font-size:.85rem;margin-top:12px}
+    @media(max-width:820px){.grid{grid-template-columns:1fr}.campos{grid-template-columns:1fr}}
+  </style>
+</head>
+<body>
+<header><h1>Laboratório de Aprendizado Supervisionado</h1><p>Modelos treinados com scikit-learn e servidos por uma API Flask.</p></header>
+<main>
+  <nav class="abas" id="abas"></nav>
+  <section class="grid">
+    <div class="card"><h2>Dados de entrada</h2><form id="formulario"><div class="campos" id="campos"></div><button type="submit">Prever</button></form><div id="erro" class="erro"></div></div>
+    <div class="card"><h2>Resultado</h2><div id="resultado"><small>Preencha os dados e clique em Prever.</small></div><div id="metricas"></div></div>
+  </section>
+</main>
+<script>
+let problemas={}, atual=null;
+const fmtNome=s=>s.replaceAll('_',' ').replace(/\b\w/g,c=>c.toUpperCase());
+async function iniciar(){problemas=await (await fetch('/api/problemas')).json();const abas=document.getElementById('abas');Object.entries(problemas).forEach(([nome,p],i)=>{const b=document.createElement('button');b.className='aba'+(i===0?' ativa':'');b.textContent=p.titulo;b.onclick=()=>selecionar(nome);b.dataset.nome=nome;abas.appendChild(b)});selecionar(Object.keys(problemas)[0]);}
+function selecionar(nome){atual=nome;document.querySelectorAll('.aba').forEach(b=>b.classList.toggle('ativa',b.dataset.nome===nome));const p=problemas[nome],c=document.getElementById('campos');c.innerHTML='';Object.entries(p.features).forEach(([campo,cfg])=>{const d=document.createElement('div');let el;if(cfg.tipo==='categoria'){el=document.createElement('select');cfg.opcoes.forEach(o=>{const x=document.createElement('option');x.value=o;x.textContent=fmtNome(o);if(o===cfg.padrao)x.selected=true;el.appendChild(x)})}else{el=document.createElement('input');el.type='number';el.step='any';el.min=cfg.min;el.max=cfg.max;el.value=cfg.padrao;}el.name=campo;d.innerHTML=`<label>${fmtNome(campo)}</label>`;d.appendChild(el);c.appendChild(d)});document.getElementById('resultado').innerHTML='<small>Preencha os dados e clique em Prever.</small>';mostrarMetricas(p.metricas);}
+function mostrarMetricas(m){const d=document.getElementById('metricas');if(!m||!m.modelo){d.innerHTML='';return}let html=`<div class="nota"><strong>Modelo selecionado:</strong> ${m.modelo}<br><strong>Validação:</strong> ${m.metrica_cv}`;if(m.teste){if(m.teste.roc_auc!==undefined)html+=`<br>ROC AUC teste: ${(m.teste.roc_auc*100).toFixed(1)}%`;if(m.teste.acuracia!==undefined)html+=` · Acurácia: ${(m.teste.acuracia*100).toFixed(1)}%`;if(m.teste.recall!==undefined)html+=` · Recall: ${(m.teste.recall*100).toFixed(1)}%`;}html+='</div>';d.innerHTML=html;}
+document.getElementById('formulario').addEventListener('submit',async e=>{e.preventDefault();document.getElementById('erro').textContent='';const data={};new FormData(e.target).forEach((v,k)=>data[k]=v);const r=await fetch(`/api/prever/${atual}`,{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify(data)});const j=await r.json();if(!r.ok){document.getElementById('erro').textContent=(j.erros||[j.erro]).join(' · ');return}const out=document.getElementById('resultado');if(problemas[atual].tipo==='classificacao'){const cls=j.classe?'alto':'baixo';out.innerHTML=`<small>${j.resultado}</small><div class="resultado ${cls}">${j.percentual.toFixed(1)}%</div><div class="barra"><span style="width:${Math.min(j.percentual,100)}%"></span></div><strong class="${cls}">${j.rotulo}</strong><div class="nota">Limiar de decisão: ${(j.limiar*100).toFixed(0)}%</div>`}else{out.innerHTML=`<small>${j.resultado}</small><div class="resultado">R$ ${j.valor.toLocaleString('pt-BR',{maximumFractionDigits:0})}</div>`}});
+iniciar();
+</script>
+</body>
+</html>
