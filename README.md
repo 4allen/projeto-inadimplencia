@@ -544,37 +544,6 @@ Os resultados numéricos podem ser consultados sem executar novamente:
 - HTML, CSS e JavaScript
 
 ---
-
-# 14. Sugestão de commits
-
-Uma sequência organizada para subir o trabalho ao GitHub:
-
-```bash
-git add .gitignore requirements.txt config.py
-git commit -m "chore: configure machine learning project"
-
-git add gerar_dados.py data/
-git commit -m "feat: add synthetic datasets including credit data"
-
-git add ml_utils.py treinar.py models/
-git commit -m "feat: implement supervised learning pipelines and training"
-
-git add analise_credito.py reports/ docs/graficos/
-git commit -m "feat: add credit analysis threshold optimization and bonus experiments"
-
-git add app.py templates/ docs/capturas/
-git commit -m "feat: integrate credit risk model into Flask interface"
-
-git add validar_projeto.py README.md
-git commit -m "docs: add complete project documentation"
-```
-
-Depois:
-
-```bash
-git push -u origin main
-```
-
 ---
 
 ## Observação final
